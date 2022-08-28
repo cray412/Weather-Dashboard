@@ -4,33 +4,44 @@ var searchHistory = [];
 
 var searchFormEl = document.querySelector('#search-form');
 
-var currentWeather = (function getCurrentWeather(searchInputVal) {
+function getCurrentWeather(query) {
 
-    fetch('http://api.openweathermap.org/geo/1.0/direct?q=' + searchInputVal + "&limit=1&appid=" + apiKey);
+    fetch('https://api.openweathermap.org/data/2.5/weather?q=' + query + "&limit=1&appid=" + apiKey)
 
     .then(function(response) {
-        return response.JSON();
+        return response.json();
     })
 
-    .then(function(resonse) {
-        var longitude = response.coord.longitude;
-        var latitude = response.coord.latitude
+    .then(function(response) {
+        var longitude = response.coord.lon;
+        var latitude = response.coord.lat;
+
+        fetch('https://api.openweathermap.org/data/2.5/weather?lat=' + latitude + "&lon=" + longitude + "&units=imperial&appid=" + apiKey)
+
+        .then(function(response) {
+            return response.json();
+        })
+
+        .then(function(response) {
+            console.log(response);
+            var currentTemp = response.main.temp
+            console.log("Current temperature in " + query + " is " + Math.round(currentTemp) + " \u00B0F");
+        })
     })
-});
+};
 
-function handleSearchFormSubmit(event) {
-    event.preventDefault();
-
+function handleSearchFormSubmit(e) {
+    e.preventDefault();
     var searchInputVal = document.querySelector('#search-input').value;
 
     if (!searchInputVal) {
+        console.log("Invalid Input!");
         return;
     }
+        getCurrentWeather(searchInputVal);
+        console.log(searchInputVal);
 
-    var queryString = 'http://api.openweathermap.org/geo/1.0/direct?q=' + searchInputVal + "&limit=1&appid=" + apiKey;
 
-
-    console.log(queryString);
 }
 
 searchFormEl.addEventListener('submit', handleSearchFormSubmit);
