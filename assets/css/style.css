@@ -1,0 +1,11 @@
+* {
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+h1 {
+    height: 55px;
+    text-align: center;
+    color: white;
+    background-image: linear-gradient(to left, yellow, red, yellow);
+    
+}
