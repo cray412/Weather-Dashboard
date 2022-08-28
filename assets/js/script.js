@@ -1,5 +1,9 @@
 
 var apiKey = "6015d4614214e35f89f83b4825650637";
+var currentTempEl = document.querySelector(".current-temp");
+var currentHumEl = document.querySelector(".current-humidity");
+var currentWindEl = document.querySelector(".current-wind");
+currentHumEl
 var searchHistory = [];
 
 var searchFormEl = document.querySelector('#search-form');
@@ -24,8 +28,15 @@ function getCurrentWeather(query) {
 
         .then(function(response) {
             console.log(response);
-            var currentTemp = response.main.temp
-            console.log("Current temperature in " + query + " is " + Math.round(currentTemp) + " \u00B0F");
+            var cityName = response.name
+            var currentTemp = response.main.temp;
+            var currentHumidity = response.main.humidity;
+            var windSpeed = response.wind.speed;
+
+            
+            currentTempEl.textContent = "The current temperature in " + cityName + " is " + Math.round(currentTemp) + " \u00B0F" ;
+            currentHumEl.textContent = "The current humidity in " + cityName + " is " + currentHumidity;
+            currentWindEl.textContent = "The current wind speed in " + cityName + " is " + windSpeed;
         })
     })
 };
