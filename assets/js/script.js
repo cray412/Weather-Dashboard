@@ -1,5 +1,6 @@
 
 var apiKey = "6015d4614214e35f89f83b4825650637";
+var currentCityEl = document.querySelector(".current-city");
 var currentTempEl = document.querySelector(".current-temp");
 var currentHumEl = document.querySelector(".current-humidity");
 var currentWindEl = document.querySelector(".current-wind");
@@ -10,7 +11,7 @@ var searchFormEl = document.querySelector('#search-form');
 
 function getCurrentWeather(query) {
 
-    fetch('https://api.openweathermap.org/data/2.5/weather?q=' + query + "&limit=1&appid=" + apiKey)
+    fetch('https://api.openweathermap.org/data/2.5/weather?q=' + query + "&appid=" + apiKey)
 
     .then(function(response) {
         return response.json();
@@ -28,15 +29,21 @@ function getCurrentWeather(query) {
 
         .then(function(response) {
             console.log(response);
-            var cityName = response.name
+            var cityName = response.name;
+            var currentDate = moment().format("M/D/YYYY");
             var currentTemp = response.main.temp;
             var currentHumidity = response.main.humidity;
             var windSpeed = response.wind.speed;
+            var country = response.sys.country;
 
-            
-            currentTempEl.textContent = "The current temperature in " + cityName + " is " + Math.round(currentTemp) + " \u00B0F" ;
-            currentHumEl.textContent = "The current humidity in " + cityName + " is " + currentHumidity;
-            currentWindEl.textContent = "The current wind speed in " + cityName + " is " + windSpeed;
+            currentCityEl.textContent = cityName + " (" + currentDate + ")";
+            currentTempEl.textContent = "Temp: " + Math.round(currentTemp) + " \u00B0F" ;
+            currentWindEl.textContent = "Wind: " + windSpeed + " MPH";
+            currentHumEl.textContent = "Humidity: " + currentHumidity + "%";
+        })
+
+        .catch(function(error) {
+
         })
     })
 };
