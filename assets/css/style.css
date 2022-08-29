@@ -46,3 +46,25 @@ h2 {
 #current-weather-icon {
     display: inline;
 }
+
+#current-uv {
+    display: inline;
+}
+
+#current-uv-value {
+    display: inline;
+    padding: 0px 5px;
+    width: fit-content;
+}
+
+.favorable {
+    background-color: green;
+}
+
+.moderate {
+    background-color: yellow;
+}
+
+.severe {
+    background-color: red;
+}
