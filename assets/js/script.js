@@ -1,5 +1,6 @@
 
 var apiKey = "6015d4614214e35f89f83b4825650637";
+var currentWeatherEl = document.querySelector("#current-weather");
 var currentCityEl = document.querySelector(".current-city");
 var currentWeatherIconEl = document.querySelector("#current-weather-icon")
 var currentTempEl = document.querySelector(".current-temp");
@@ -42,6 +43,7 @@ function getCurrentWeather(query) {
                     currentTempEl.textContent = "Temp: " + Math.round(currentTemp) + " \u00B0F";
                     currentWindEl.textContent = "Wind: " + windSpeed + " MPH";
                     currentHumEl.textContent = "Humidity: " + currentHumidity + "%";
+                    currentWeatherEl.setAttribute("style", "border: 1px solid black");
                 })
 
                 .catch(function (error) {
