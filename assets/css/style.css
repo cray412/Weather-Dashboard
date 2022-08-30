@@ -63,6 +63,32 @@ h1 {
     width: fit-content;
 }
 
+#forecast-title {
+    width: 100%;
+    margin-bottom: 10px;
+    font-size: 25px;
+    font-weight: bold;
+}
+
+#card-holder {
+    width: 100%;
+    margin: 0px 15px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.forecast-card {
+    width: 17%;
+    margin: 10px;
+    padding: 10px;
+    color: white;
+    background-color: #0B62E0;
+}
+
+.forecast-date {
+    font-weight: bold;
+}
+
 .favorable {
     background-color: green;
     color: white;

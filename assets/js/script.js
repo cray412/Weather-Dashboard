@@ -80,9 +80,9 @@ function getForecast(city) {
             var latitude = response.coord.lat;
             var longitude = response.coord.lon;
 
-            forecastTitleEl.textContent = "5-Day Forecast";
+            forecastTitleEl.textContent = "5-Day Forecast:";
 
-            fetch("https://api.openweathermap.org/data/2.5/forecast?lat=" + latitude + "&lon=" + longitude + "&appid=" + apiKey)
+            fetch("https://api.openweathermap.org/data/2.5/forecast?lat=" + latitude + "&lon=" + longitude + "&appid=" + apiKey + "&units=imperial")
 
                 .then(function (response) {
                     return response.json();
@@ -90,6 +90,28 @@ function getForecast(city) {
 
                 .then(function (response) {
                     console.log(response);
+
+                    for (i = 0; i < 5; i++) {
+
+                        var forecastDateEl = document.querySelector("#forecast-date-" + (i + 1));
+                        date = moment().add(i + 1, "d").format("M/D/YYYY");
+                        forecastDateEl.textContent = date;
+
+                        var forecastIconEl = document.querySelector("#forecast-icon-" + (i + 1));
+                        forecastWeatherIcon = response.list[i].weather[0].icon;
+                        forecastIconEl.setAttribute("src", "https://openweathermap.org/img/wn/" + forecastWeatherIcon + ".png");
+
+                        var forecastTempEl = document.querySelector("#forecast-temp-" + (i + 1));
+                        forecastTempEl.textContent = "Temp: " + Math.round(response.list[i].main.temp) + "\u00B0F";
+
+                        var forecastWindEl = document.querySelector("#forecast-wind-" + (i + 1));
+                        forecastWindEl.textContent = "Wind: " + Math.round(response.list[i].wind.speed) + " MPH";
+
+                        var forecastHumidityEl = document.querySelector("#forecast-humidity-" + (i + 1));
+                        forecastHumidityEl.textContent = "Humidity: " + Math.round(response.list[i].main.humidity) + "%";
+
+
+                    }
 
                 });
         })
