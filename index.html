@@ -19,18 +19,17 @@
     </header>
     <main class="main">
         <div class="row">
-            <div class="col-sm-4">
+            <div class="col-sm-4 p-0">
+                <form id="search-form">
+                    <label id="search-label" for="search-input">Search for a City:</label>
+                    <input id="search-input" class="form-input" placeholder="e.g. Philadelphia"></input>
+                    <button class="btn btn-primary">Search</button>
+                </form>
                 <div>
-                    <form id="search-form">
-                        <label id="search-label" for="search-input">Search for a City:</label>
-                        <input id="search-input" class="form-input" placeholder="e.g. Philadelphia"></input>
-                        <button class="btn btn-primary">Search</button>
-                    </form>
-                </div>
-                <div>
+                    <div id="search-history" class="row search-history"></div>
                 </div>
             </div>
-            <div class="col-sm-8 current-weather-display">
+            <div class="col-sm-8 p-0 current-weather-display">
                 <div class="row" id="current-weather">
                     <h2 id="current-city" class="info-titles"></h2>
                     <img id="current-weather-icon" src="">

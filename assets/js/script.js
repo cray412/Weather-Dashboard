@@ -11,8 +11,22 @@ var currentUvEl = document.querySelector("#current-uv");
 var currentUvValueEl = document.querySelector("#current-uv-value");
 var searchFormEl = document.querySelector("#search-form");
 var forecastTitleEl = document.querySelector("#forecast-title");
-var searchHistory = [];
+var searchHistoryArray = [];
 
+var saveCity = (newCity) => {
+    var cityExists = false;
+    // Check if City exists in local storage
+    for (var i = 0; i < localStorage.length; i++) {
+        if (localStorage["cities" + i] === newCity) {
+            cityExists = true;
+            return;
+        }
+    }
+    // Save to localStorage if city is new
+    if (cityExists === false) {
+        localStorage.setItem('cities' + localStorage.length, newCity);
+    }
+}
 
 
 function getCurrentWeather(city) {
@@ -24,6 +38,7 @@ function getCurrentWeather(city) {
         })
 
         .then(function (response) {
+            saveCity(city);
             var latitude = response.coord.lat;
             var longitude = response.coord.lon;
             var cityName = response.name;
@@ -64,8 +79,6 @@ function getCurrentWeather(city) {
 
         })
 }
-
-//         .catch (function (error) {
 
 
 function getForecast(city) {

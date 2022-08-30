@@ -3,6 +3,10 @@
     box-sizing: border-box;
 }
 
+.main {
+    padding: 15px;
+}
+
 h1 {
     height: 55px;
     text-align: center;
@@ -16,12 +20,11 @@ h1 {
 }
 
 #forecast-title {
-    margin-left: 40px;
+    margin-left: 30px;
 }
 
 #search-form {
-    margin: 0px 10px;
-    min-width: 280px;
+    margin-left: 10px;
 }
 
 #search-input {
