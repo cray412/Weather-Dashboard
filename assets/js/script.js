@@ -1,3 +1,4 @@
+// Global variables
 
 var apiKey = "6015d4614214e35f89f83b4825650637";
 var currentWeatherEl = document.querySelector("#current-weather");
@@ -8,13 +9,15 @@ var currentHumEl = document.querySelector("#current-humidity");
 var currentWindEl = document.querySelector("#current-wind");
 var currentUvEl = document.querySelector("#current-uv");
 var currentUvValueEl = document.querySelector("#current-uv-value");
+var searchFormEl = document.querySelector("#search-form");
+var forecastTitleEl = document.querySelector("#forecast-title");
 var searchHistory = [];
 
-var searchFormEl = document.querySelector('#search-form');
+
 
 function getCurrentWeather(city) {
 
-    fetch('https://api.openweathermap.org/data/2.5/weather?q=' + city + "&appid=" + apiKey + "&units=imperial")
+    fetch("https://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=" + apiKey + "&units=imperial")
 
         .then(function (response) {
             return response.json();
@@ -25,13 +28,13 @@ function getCurrentWeather(city) {
             var longitude = response.coord.lon;
             var cityName = response.name;
             var currentDate = moment().format("M/D/YYYY");
-            currentIcon = response.weather[0].icon;
+            var currentIcon = response.weather[0].icon;
             var currentTemp = response.main.temp;
             var currentHumidity = response.main.humidity;
-            var windSpeed = response.wind.speed;
+            var windSpeed = Math.round(response.wind.speed);
             var country = response.sys.country;
 
-            currentCityEl.textContent = cityName + " (" + currentDate + ")";
+            currentCityEl.textContent = cityName + ", " + country + " (" + currentDate + ")";
             currentWeatherIconEl.setAttribute("src", "https://openweathermap.org/img/wn/" + currentIcon + ".png");
             currentTempEl.textContent = "Temp: " + Math.round(currentTemp) + " \u00B0F";
             currentWindEl.textContent = "Wind: " + windSpeed + " MPH";
@@ -45,27 +48,52 @@ function getCurrentWeather(city) {
                 })
 
                 .then(function (response) {
-                    console.log(response);
-                    var currentUv = response.value;
+                    var currentUv = Math.round(response.value);
 
                     currentUvEl.textContent = "UV Index: ";
                     currentUvValueEl.textContent = currentUv;
 
                     if (currentUv <= 2) {
                         currentUvValueEl.classList.add("favorable");
-                    } else if (currentUv > 2 && currentUv <= 7) {
+                    } else if (currentUv > 2 && currentUv < 8) {
                         currentUvValueEl.classList.add("moderate");
                     } else {
                         currentUvValueEl.classList.add("severe");
                     }
+                })
+
+        })
+}
+
+//         .catch (function (error) {
+
+
+function getForecast(city) {
+
+    fetch("https://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=" + apiKey + "&units=imperial")
+
+        .then(function (response) {
+            return response.json();
         })
 
-})
+        .then(function (response) {
+            var latitude = response.coord.lat;
+            var longitude = response.coord.lon;
 
-        .catch (function (error) {
+            forecastTitleEl.textContent = "5-Day Forecast";
 
-})
-};
+            fetch("https://api.openweathermap.org/data/2.5/forecast?lat=" + latitude + "&lon=" + longitude + "&appid=" + apiKey)
+
+                .then(function (response) {
+                    return response.json();
+                })
+
+                .then(function (response) {
+                    console.log(response);
+
+                });
+        })
+}
 
 function handleSearchFormSubmit(e) {
     e.preventDefault();
@@ -75,8 +103,10 @@ function handleSearchFormSubmit(e) {
         console.log("Invalid Input!");
         return;
     }
+    else { }
     currentUvValueEl.classList.remove("favorable", "moderate", "severe");
     getCurrentWeather(searchInputVal);
+    getForecast(searchInputVal);
 
 }
 
