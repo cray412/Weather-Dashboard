@@ -93,6 +93,9 @@ function getForecast(city) {
 
                     for (i = 0; i < 5; i++) {
 
+                        var forecastCardEl = document.querySelector("#forecast-card-" + (i + 1));
+                        forecastCardEl.classList.add("forecast-card");
+
                         var forecastDateEl = document.querySelector("#forecast-date-" + (i + 1));
                         date = moment().add(i + 1, "d").format("M/D/YYYY");
                         forecastDateEl.textContent = date;
