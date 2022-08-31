@@ -45,6 +45,11 @@ h1 {
     width: 100%;
 }
 
+.saved-button {
+    margin: 10px;
+    width: 100%;
+}
+
 #current-weather {
     display: block;
     margin: 10px;

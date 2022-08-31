@@ -11,22 +11,9 @@ var currentUvEl = document.querySelector("#current-uv");
 var currentUvValueEl = document.querySelector("#current-uv-value");
 var searchFormEl = document.querySelector("#search-form");
 var forecastTitleEl = document.querySelector("#forecast-title");
-var searchHistoryArray = [];
+var searchHistoryEl = document.querySelector("#search-list");
 
-var saveCity = (newCity) => {
-    var cityExists = false;
-    // Check if City exists in local storage
-    for (var i = 0; i < localStorage.length; i++) {
-        if (localStorage["cities" + i] === newCity) {
-            cityExists = true;
-            return;
-        }
-    }
-    // Save to localStorage if city is new
-    if (cityExists === false) {
-        localStorage.setItem('cities' + localStorage.length, newCity);
-    }
-}
+var searchHistory = [];
 
 
 function getCurrentWeather(city) {
@@ -38,7 +25,6 @@ function getCurrentWeather(city) {
         })
 
         .then(function (response) {
-            saveCity(city);
             var latitude = response.coord.lat;
             var longitude = response.coord.lon;
             var cityName = response.name;
@@ -56,30 +42,70 @@ function getCurrentWeather(city) {
             currentHumEl.textContent = "Humidity: " + currentHumidity + "%";
             currentWeatherEl.setAttribute("style", "border: 1px solid black");
 
-            fetch("https://api.openweathermap.org/data/2.5/uvi?q=" + city + "&appid=" + apiKey + "&lat=" + latitude + "&lon=" + longitude)
 
-                .then(function (response) {
-                    return response.json();
-                })
 
-                .then(function (response) {
-                    var currentUv = Math.round(response.value);
+            function getSearchHistory() {
+                var savedSearchHistory = (JSON.parse(localStorage.getItem("savedCities")));
 
-                    currentUvEl.textContent = "UV Index: ";
-                    currentUvValueEl.textContent = currentUv;
+                function showHistory() {
+                for (var i = 0; i < searchHistory.length; i++) {
+                    var searches = searchHistory[i];
 
-                    if (currentUv <= 2) {
-                        currentUvValueEl.classList.add("favorable");
-                    } else if (currentUv > 2 && currentUv < 8) {
-                        currentUvValueEl.classList.add("moderate");
-                    } else {
-                        currentUvValueEl.classList.add("severe");
-                    }
-                })
+                    var li = document.createElement("li");
+                    li.setAttribute("data-index", i);
+
+                    var button = document.createElement("button");
+                    button.classList.add("saved-button")
+                    button.textContent = searches;
+
+                    li.appendChild(button);
+                    searchHistoryEl.appendChild(li);
+                    console.log(searches);
+                }
+            }
+
+                if (savedSearchHistory !== null) {
+                    searchHistory = savedSearchHistory
+                }
+
+
+                if (!searchHistory) {
+                    searchHistory = [];
+                }
+
+                showHistory();
+
+
+                searchHistory.push(cityName);
+                localStorage.setItem("savedCities", JSON.stringify(searchHistory));
+
+
+                fetch("https://api.openweathermap.org/data/2.5/uvi?q=" + city + "&appid=" + apiKey + "&lat=" + latitude + "&lon=" + longitude)
+
+                    .then(function (response) {
+                        return response.json();
+                    })
+
+                    .then(function (response) {
+                        var currentUv = Math.round(response.value);
+
+                        currentUvEl.textContent = "UV Index: ";
+                        currentUvValueEl.textContent = currentUv;
+
+                        if (currentUv <= 2) {
+                            currentUvValueEl.classList.add("favorable");
+                        } else if (currentUv > 2 && currentUv < 8) {
+                            currentUvValueEl.classList.add("moderate");
+                        } else {
+                            currentUvValueEl.classList.add("severe");
+                        }
+                    })
+            }
+            getSearchHistory();
 
         })
-}
 
+}
 
 function getForecast(city) {
 
@@ -102,7 +128,6 @@ function getForecast(city) {
                 })
 
                 .then(function (response) {
-                    console.log(response);
 
                     for (i = 0; i < 5; i++) {
 
@@ -147,6 +172,10 @@ function handleSearchFormSubmit(e) {
     getForecast(searchInputVal);
 
 }
+
+
+
+// console.log(searchHistory);
 
 searchFormEl.addEventListener('submit', handleSearchFormSubmit);
 
