@@ -44,25 +44,25 @@ function getCurrentWeather(city) {
 
 
 
-            function getSearchHistory() {
+
                 var savedSearchHistory = (JSON.parse(localStorage.getItem("savedCities")));
 
                 function showHistory() {
-                for (var i = 0; i < searchHistory.length; i++) {
-                    var searches = searchHistory[i];
+                    for (var i = 0; i < searchHistory.length; i++) {
+                        var searches = searchHistory[i];
 
-                    var li = document.createElement("li");
-                    li.setAttribute("data-index", i);
+                        var li = document.createElement("li");
+                        li.setAttribute("data-index", i);
 
-                    var button = document.createElement("button");
-                    button.classList.add("saved-button")
-                    button.textContent = searches;
+                        var button = document.createElement("button");
+                        button.classList.add("saved-button")
+                        button.textContent = searches;
 
-                    li.appendChild(button);
-                    searchHistoryEl.appendChild(li);
-                    console.log(searches);
+                        li.appendChild(button);
+                        searchHistoryEl.appendChild(li);
+                        console.log(searches);
+                    }
                 }
-            }
 
                 if (savedSearchHistory !== null) {
                     searchHistory = savedSearchHistory
@@ -92,6 +92,7 @@ function getCurrentWeather(city) {
                         currentUvEl.textContent = "UV Index: ";
                         currentUvValueEl.textContent = currentUv;
 
+
                         if (currentUv <= 2) {
                             currentUvValueEl.classList.add("favorable");
                         } else if (currentUv > 2 && currentUv < 8) {
@@ -100,8 +101,8 @@ function getCurrentWeather(city) {
                             currentUvValueEl.classList.add("severe");
                         }
                     })
-            }
-            getSearchHistory();
+
+
 
         })
 
